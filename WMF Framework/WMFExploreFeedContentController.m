@@ -75,6 +75,20 @@ NSString *const WMFNewExploreFeedPreferencesWereRejectedNotification = @"WMFNewE
 
 - (void)setDataStore:(MWKDataStore *)dataStore {
     _dataStore = dataStore;
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        // Purge any legacy non-NITC content groups cached from earlier Wikipedia runs
+        [dataStore.viewContext performBlock:^{
+            NSFetchRequest *request = [WMFContentGroup fetchRequest];
+            request.predicate = [NSPredicate predicateWithFormat:@"siteURLString != NULL AND !(siteURLString CONTAINS[cd] %@)", @"fosscell.org"];
+            NSArray *legacyGroups = [dataStore.viewContext executeFetchRequest:request error:nil];
+            for (NSManagedObject *group in legacyGroups) {
+                [dataStore.viewContext deleteObject:group];
+            }
+            if (legacyGroups.count > 0) {
+                [dataStore.viewContext save:nil];
+            }
+        }];
+    }
     self.exploreFeedPreferencesUpdateCoordinator = [[ExploreFeedPreferencesUpdateCoordinator alloc] initWithFeedContentController:self];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateExploreFeedPreferencesFromDidSaveNotification:) name:WMFViewContextDidSave object:nil];
 }

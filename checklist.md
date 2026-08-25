@@ -42,3 +42,9 @@ Tracking all changes made to port the Wikimedia iOS app to NITCWiki targeting `w
 - [x] `[MODIFY] Wikipedia/Code/MWKDataStore.m` — Enforce `https://wiki.fosscell.org` for `primarySiteURL`
 - [x] `[MODIFY] Wikipedia/Code/MWKLanguageLinkController.m` — Enforce single `https://wiki.fosscell.org` in `preferredSiteURLs`
 - [x] `[MODIFY] Wikipedia/Code/WMFAppViewController.swift` — Skip initial Wikipedia onboarding in NITC mode
+- [x] `[MODIFY] Wikipedia/Code/APIURLComponentsBuilder.swift` — Strictly enforce NITC host in all RESTBase & MediaWiki production builders
+- [x] `[MODIFY] Wikipedia/Code/ExploreViewController.swift` — Filter out non-NITC content groups from FRC feed predicate
+- [x] `[MODIFY] WMF Framework/WMFExploreFeedContentController.m` — Purge legacy cached Wikipedia content groups on launch
+- [x] `[MODIFY] Wikipedia/Code/WMFAccountLoginLogoutFetcher.swift` — Update `loginreturnurl` to dynamically use `siteURL.absoluteString` (instead of `wikipedia.org`)
+- [x] `[MODIFY] Wikipedia/Code/WMFAccountCreator.swift` — Update `createreturnurl` to `siteURL.absoluteString`
+- [x] `[MODIFY] Wikipedia/Code/WMFCurrentUserFetcher.swift` — Make `globaluserinfo` optional for standalone MediaWiki without CentralAuth extension

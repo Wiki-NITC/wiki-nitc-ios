@@ -166,7 +166,7 @@ public class WMFAccountCreator: Fetcher {
             "username": username,
             "password": password,
             "retype": retypePassword,
-            "createreturnurl": "https://www.wikipedia.org",
+            "createreturnurl": siteURL.absoluteString,
             "createmessageformat": "html",
             "format": "json"
         ]

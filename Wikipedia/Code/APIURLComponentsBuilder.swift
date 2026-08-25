@@ -57,8 +57,14 @@ public struct APIURLComponentsBuilder {
         /// Returns a block that will return a builder for a given host. For production, the host is the host of the wiki: https://en.wikipedia.org/api/rest_v1/
         private static func productionBuilder(withWikiHost wikiHost: String? = nil) -> APIURLComponentsBuilder {
             var components = URLComponents()
-            let defaultHost = NITCWikiFeatureFlags.current.isNITCWiki ? Configuration.Domain.nitcWiki : Configuration.Domain.englishWikipedia
-            components.host = wikiHost ?? defaultHost
+            let host: String
+            if NITCWikiFeatureFlags.current.isNITCWiki {
+                host = Configuration.Domain.nitcWiki
+            } else {
+                let defaultHost = Configuration.Domain.englishWikipedia
+                host = wikiHost ?? defaultHost
+            }
+            components.host = host
             components.scheme = Configuration.Scheme.https
             return APIURLComponentsBuilder(hostComponents: components, basePathComponents: Configuration.currentRestBaseAPIComponents)
         }
@@ -120,16 +126,28 @@ public struct APIURLComponentsBuilder {
         
         private static func productionRestBuilder(withWikiHost wikiHost: String? = nil) -> APIURLComponentsBuilder {
             var components = URLComponents()
-            let defaultHost = NITCWikiFeatureFlags.current.isNITCWiki ? Configuration.Domain.nitcWiki : Configuration.Domain.englishWikipedia
-            components.host = wikiHost ?? defaultHost
+            let host: String
+            if NITCWikiFeatureFlags.current.isNITCWiki {
+                host = Configuration.Domain.nitcWiki
+            } else {
+                let defaultHost = Configuration.Domain.englishWikipedia
+                host = wikiHost ?? defaultHost
+            }
+            components.host = host
             components.scheme = Configuration.Scheme.https
             return APIURLComponentsBuilder(hostComponents: components, basePathComponents: Configuration.currentMediaWikiRestAPIComponents)
         }
         
         private static func productionBuilder(withWikiHost wikiHost: String? = nil) -> APIURLComponentsBuilder {
             var components = URLComponents()
-            let defaultHost = NITCWikiFeatureFlags.current.isNITCWiki ? Configuration.Domain.nitcWiki : Configuration.Domain.metaWiki
-            components.host = wikiHost ?? defaultHost
+            let host: String
+            if NITCWikiFeatureFlags.current.isNITCWiki {
+                host = Configuration.Domain.nitcWiki
+            } else {
+                let defaultHost = Configuration.Domain.metaWiki
+                host = wikiHost ?? defaultHost
+            }
+            components.host = host
             components.scheme = Configuration.Scheme.https
             return APIURLComponentsBuilder(hostComponents: components, basePathComponents: Configuration.currentMediaWikiAPIComponents)
         }

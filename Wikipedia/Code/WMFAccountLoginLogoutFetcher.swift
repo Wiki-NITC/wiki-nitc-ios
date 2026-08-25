@@ -94,7 +94,7 @@ public class WMFAccountLoginLogoutFetcher: Fetcher {
             "action": "clientlogin",
             "username": username,
             "password": password,
-            "loginreturnurl": "https://www.wikipedia.org",
+            "loginreturnurl": siteURL.absoluteString,
             "rememberMe": "1",
             "format": "json"
         ]

@@ -407,14 +407,19 @@ class ExploreViewController: ColumnarCollectionViewController, ExploreCardViewCo
         let today = NSDate().wmf_midnightUTCDateFromLocal as Date
         let oldestDate = Calendar.current.date(byAdding: .day, value: -WMFExploreFeedMaximumNumberOfDays, to: today) ?? today
         
-        if isEmbeddedInHomeTab {
+        var predicates: [NSPredicate] = [
+            NSPredicate(format: "isVisible == YES && (placement == NULL || placement == %@) && midnightUTCDate >= %@", "feed", oldestDate as NSDate)
+        ]
+        
+        if NITCWikiFeatureFlags.current.isNITCWiki {
+            // Only show self-contained or NITC wiki content groups, exclude legacy Wikipedia cards
+            predicates.append(NSPredicate(format: "siteURLString == NULL || siteURLString CONTAINS %@", "fosscell.org"))
+        } else if isEmbeddedInHomeTab {
             // Remove because you read / related articles
-            fetchRequest.predicate = NSPredicate(format: "isVisible == YES && (placement == NULL || placement == %@) && midnightUTCDate >= %@ && contentGroupKindInteger != %@", "feed", oldestDate as NSDate, NSNumber(value: 3))
-        } else {
-            fetchRequest.predicate = NSPredicate(format: "isVisible == YES && (placement == NULL || placement == %@) && midnightUTCDate >= %@", "feed", oldestDate as NSDate)
+            predicates.append(NSPredicate(format: "contentGroupKindInteger != %@", NSNumber(value: 3)))
         }
         
-        // fetchRequest.predicate = NSPredicate(format: "isVisible == YES && (placement == NULL || placement == %@) && midnightUTCDate >= %@", "feed", oldestDate as NSDate)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         fetchRequest.sortDescriptors = dataStore.feedContentController.exploreFeedSortDescriptors()
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataStore.viewContext, sectionNameKeyPath: "midnightUTCDate", cacheName: nil)
         fetchedResultsController = frc

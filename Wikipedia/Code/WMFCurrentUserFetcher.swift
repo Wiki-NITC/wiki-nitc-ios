@@ -56,9 +56,10 @@ public enum WMFUserFetcherError: LocalizedError {
 
 public class WMFCurrentUserFetcher: Fetcher {
     public func fetch(siteURL: URL, success: @escaping (WMFCurrentUser) -> Void, failure: @escaping WMFErrorHandler) {
+        let metaParam = NITCWikiFeatureFlags.current.isNITCWiki ? "userinfo" : "userinfo|globaluserinfo"
         let parameters = [
             "action": "query",
-            "meta": "userinfo|globaluserinfo",
+            "meta": metaParam,
             "uiprop": "groups|blockinfo|editcount|registrationdate",
             "format": "json"
         ]
@@ -71,14 +72,15 @@ public class WMFCurrentUserFetcher: Fetcher {
             guard
                 let query = result?["query"] as? [String : Any],
                 let userinfo = query["userinfo"] as? [String : Any],
-                let globalUserInfo = query["globaluserinfo"] as? [String : Any],
                 let userID = userinfo["id"] as? Int,
-                let globalUserID = globalUserInfo["id"] as? Int,
                 let userName = userinfo["name"] as? String
                 else {
                     failure(WMFUserFetcherError.cannotExtractUserInfo)
                     return
             }
+            
+            let globalUserInfo = query["globaluserinfo"] as? [String : Any]
+            let globalUserID = globalUserInfo?["id"] as? Int ?? 0
             
             let isIP = userinfo["anon"] != nil
             let isTemp = userinfo["temp"] != nil
