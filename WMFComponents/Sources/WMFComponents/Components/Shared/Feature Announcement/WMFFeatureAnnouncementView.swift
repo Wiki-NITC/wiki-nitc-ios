@@ -107,16 +107,14 @@ struct WMFFeatureAnnouncementView: View {
                             ZStack(alignment: .center) {
                                 if let backgroundImage = viewModel.backgroundImage {
                                     Image(uiImage: backgroundImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
+                                        .resizable().scaledToFill()
                                         .frame(height: Constants.backgroundImageHeightRatio * Constants.foregroundImageHeight)
                                         .frame(maxWidth: max(geometry.size.width - Constants.imageHorizontalInset, Constants.minimumImageWidth))
                                         .cornerRadius(Constants.imageCornerRadius)
                                         .clipped()
                                 }
                                 Image(uiImage: image)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
+                                    .resizable().scaledToFit()
                                     .frame(width: Constants.foregroundImageWidth, height: Constants.foregroundImageHeight)
                                     .foregroundColor(imageColor)
                             }

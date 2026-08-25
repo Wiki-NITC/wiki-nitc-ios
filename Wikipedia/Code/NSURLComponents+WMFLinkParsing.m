@@ -21,7 +21,11 @@
                                      fragment:(NSString *)fragment {
     NSURLComponents *URLComponents = [[NSURLComponents alloc] init];
     URLComponents.scheme = @"https";
-    URLComponents.host = [NSURLComponents wmf_hostWithDomain:domain languageCode:languageCode];
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        URLComponents.host = @"wiki.fosscell.org";
+    } else {
+        URLComponents.host = [NSURLComponents wmf_hostWithDomain:domain languageCode:languageCode];
+    }
     if (fragment != nil) {
         URLComponents.wmf_fragment = fragment;
     }
@@ -38,6 +42,11 @@
 
 + (NSString *)wmf_hostWithDomain:(NSString *)domain
                        subDomain:(NSString *)subDomain {
+    // NITC Wiki is a single-host wiki — don't prepend language subdomains
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return domain;
+    }
+    
     NSMutableArray *hostComponents = [NSMutableArray array];
     if (subDomain) {
         [hostComponents addObject:subDomain];
@@ -51,7 +60,13 @@
 - (void)setWmf_titleWithUnderscores:(NSString *_Nullable)titleWithUnderscores {
     NSString *path = [titleWithUnderscores stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet wmf_encodeURIComponentAllowedCharacterSet]];
     if (path != nil && path.length > 0) {
-        NSArray *pathComponents = @[@"/wiki/", path];
+        NSArray *pathComponents;
+        if ([NITCWikiFeatureFlags current].isNITCWiki) {
+            // NITC Wiki uses root article paths: /<title>
+            pathComponents = @[@"/", path];
+        } else {
+            pathComponents = @[@"/wiki/", path];
+        }
         self.percentEncodedPath = [NSString pathWithComponents:pathComponents];
     } else {
         self.percentEncodedPath = nil;

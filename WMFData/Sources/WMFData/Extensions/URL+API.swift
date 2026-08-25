@@ -3,14 +3,14 @@ import Foundation
 extension URL {
     
     // https://www.mediawiki.org/wiki/API:Main_page
-    private static let baseMediaWikiAPIPathComponents = "/w/api.php"
+    private static let baseMediaWikiAPIPathComponents = "/api.php"
     private static let basePaymentWikiAPIPathComponents = "/api.php"
     
     // https://www.mediawiki.org/wiki/Wikimedia_REST_API
     private static let baseWikimediaRestAPIPathComponents = "/api/rest_v1/"
     
     // https://www.mediawiki.org/wiki/API:REST_API
-    private static let baseMediaWikiRestAPIPathComponents = "/w/rest.php/"
+    private static let baseMediaWikiRestAPIPathComponents = "/rest.php/"
     
     static func mediaWikiAPIURL(project: WMFProject) -> URL? {
         

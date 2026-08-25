@@ -32,7 +32,7 @@ extension URL {
         set { (self as NSURL).wmf_languageVariantCode = newValue }
     }
 
-    /// Build https://<host>/wiki/<title> without double-encoding.
+    /// Build article URL: https://<host>/wiki/<title> (Wikipedia) or https://<host>/<title> (NITC).
     func wmfURL(withTitle title: String, languageVariantCode: String? = nil) -> URL? {
         let normalized = title.denormalizedPageTitle
 
@@ -41,9 +41,15 @@ extension URL {
         comps.path = ""
         guard let base = comps.url else { return nil }
 
-        let url = base
-            .appendingPathComponent("wiki", isDirectory: false)
-            .appendingPathComponent(normalized, isDirectory: false)
+        let url: URL
+        if comps.host?.contains("fosscell.org") == true {
+            // NITC Wiki uses root article paths: /<title>
+            url = base.appendingPathComponent(normalized, isDirectory: false)
+        } else {
+            url = base
+                .appendingPathComponent("wiki", isDirectory: false)
+                .appendingPathComponent(normalized, isDirectory: false)
+        }
 
         (url as NSURL).wmf_languageVariantCode = languageVariantCode
         return url

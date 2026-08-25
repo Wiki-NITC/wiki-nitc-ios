@@ -125,6 +125,12 @@ public enum RemoteNotificationsControllerError: LocalizedError {
     ///   - completion: Completion block called once refresh attempt is complete.
     public func loadNotifications(force: Bool, completion: ((Result<Void, Error>) -> Void)? = nil) {
         
+        // NITC Wiki: push notifications are disabled
+        guard NITCWikiFeatureFlags.current.hasPushNotifications else {
+            completion?(.success(()))
+            return
+        }
+        
         guard let operationsController = operationsController else {
             completion?(.failure(RemoteNotificationsControllerError.databaseUnavailable))
             return

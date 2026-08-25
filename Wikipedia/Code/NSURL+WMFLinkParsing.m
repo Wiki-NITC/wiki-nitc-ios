@@ -5,8 +5,19 @@
 #import <objc/runtime.h>
 
 NSString *const WMFMediaWikiDomain = @"mediawiki.org";
-NSString *const WMFAPIPath = @"/w/api.php";
 NSString *const WMFEditPencil = @"WMFEditPencil";
+
+// NITC Wiki uses root /api.php instead of /w/api.php
+NSString *WMFAPIPath = nil;
+
+__attribute__((constructor))
+static void initWMFAPIPath(void) {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        WMFAPIPath = @"/api.php";
+    } else {
+        WMFAPIPath = @"/w/api.php";
+    }
+}
 
 @implementation NSURL (WMFLinkParsing)
 
@@ -20,14 +31,23 @@ NSString *const WMFEditPencil = @"WMFEditPencil";
 }
 
 + (NSURL *)wmf_URLWithDefaultSiteAndLanguageCode:(nullable NSString *)languageCode {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return [NSURL URLWithString:@"https://wiki.fosscell.org"];
+    }
     return [self wmf_URLWithDomain:WMFConfiguration.current.defaultSiteDomain languageCode:languageCode];
 }
 
 + (NSURL *)wmf_URLWithDefaultSiteAndLocale:(NSLocale *)locale {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return [NSURL URLWithString:@"https://wiki.fosscell.org"];
+    }
     return [self wmf_URLWithDomain:WMFConfiguration.current.defaultSiteDomain languageCode:[locale objectForKey:NSLocaleLanguageCode]];
 }
 
 + (NSURL *)wmf_URLWithDefaultSiteAndCurrentLocale {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return [NSURL URLWithString:@"https://wiki.fosscell.org"];
+    }
     return [self wmf_URLWithDefaultSiteAndLocale:[NSLocale currentLocale]];
 }
 

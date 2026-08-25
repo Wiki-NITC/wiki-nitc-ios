@@ -115,7 +115,7 @@ class WMFAccountCreationViewController: WMFScrollViewController, WMFCaptchaViewC
         loginButton.strings = WMFAuthLinkLabelStrings(dollarSignString: WMFLocalizedString("account-creation-have-account", value:"Already have an account? %1$@", comment:"Text for button which shows login interface. %1$@ is the message {{msg-wikimedia|account-creation-log-in}}"), substitutionString: WMFLocalizedString("account-creation-log-in", value:"Log in.", comment:"Log in text to be used as part of a log in button {{Identical|Log in}}"))
         
         loginButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loginButtonPushed(_:))))
-        titleLabel.text = WMFLocalizedString("account-creation-title", value:"Create a new account", comment:"Title for account creation interface")
+        titleLabel.text = NITCWikiFeatureFlags.current.isNITCWiki ? "Create a new NITCWiki account" : WMFLocalizedString("account-creation-title", value:"Create a new account", comment:"Title for account creation interface")
        
         view.wmf_configureSubviewsForDynamicType()
         

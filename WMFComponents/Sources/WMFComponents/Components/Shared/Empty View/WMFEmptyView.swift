@@ -68,8 +68,7 @@ public struct WMFEmptyView: View {
             if let image = viewModel.image {
                 if let imageSize = viewModel.imageSize {
                     Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .resizable().scaledToFit()
                         .frame(width: imageSize.width, height: imageSize.height)
                         .foregroundColor(foregroundColor)
                 } else {

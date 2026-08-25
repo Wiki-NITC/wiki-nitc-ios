@@ -86,8 +86,7 @@ struct SearchWidgetView: View {
     var body: some View {
         VStack(spacing: 12) {
             Image("wikipedia-globe")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+                .resizable().scaledToFit()
                 .frame(width: 70, height: 70)
                 .padding(.bottom, 8)
 

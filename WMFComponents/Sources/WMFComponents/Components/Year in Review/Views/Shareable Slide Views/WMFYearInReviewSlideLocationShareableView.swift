@@ -65,8 +65,7 @@ struct WMFYearInReviewSlideLocationShareableView: View {
                 // footer
                 HStack {
                     Image("globe", bundle: .module)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .resizable().scaledToFit()
                         .frame(width: 50, height: 50)
                     VStack(alignment: .leading) {
                         Text(hashtag)

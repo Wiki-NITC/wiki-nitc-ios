@@ -240,8 +240,7 @@ struct PictureOfTheDayOverlayView: View {
             HStack(alignment: .top) {
                 Spacer()
                 Image("W")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .resizable().scaledToFit()
                     .frame(height: 16, alignment: .trailing)
                     .foregroundColor(.white)
                     .padding(EdgeInsets(top: 16, leading: 0, bottom: 0, trailing: 16))
@@ -251,8 +250,7 @@ struct PictureOfTheDayOverlayView: View {
             HStack(alignment: .top, spacing: 1) {
                 ForEach(entry.licenseImages) { licenseImage in
                     Image(uiImage: licenseImage.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .resizable().scaledToFit()
                 }
             }
             .frame(height: 14)

@@ -24,8 +24,7 @@ struct WMFYearInReviewHeaderView: View {
             }
             Spacer()
             Image("W", bundle: .module)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+                .resizable().scaledToFit()
                 .frame(height: 20)
                 .foregroundColor(Color(theme.text))
                 .accessibilityLabel(viewModel.localizedStrings.wIconAccessibilityLabel)

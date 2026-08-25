@@ -19,8 +19,7 @@ public struct WMFErrorView: View {
                     
                         if let image = viewModel.image {
                             Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
+                                .resizable().scaledToFit()
                                 .frame(width: 132, height: 118)
                         }
                         

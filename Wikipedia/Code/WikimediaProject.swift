@@ -94,6 +94,16 @@ public enum WikimediaProject: Hashable {
         let canonicalSiteURL = siteURL.canonical
         let siteURLString = canonicalSiteURL.absoluteString
         
+        // NITC Wiki: recognize wiki.fosscell.org as a wikipedia-equivalent project
+        if NITCWikiFeatureFlags.current.isNITCWiki,
+           let host = canonicalSiteURL.host,
+           host == Configuration.Domain.nitcWiki {
+            // Treat NITC wiki as a single-language wikipedia project
+            let languageVariantCode = canonicalSiteURL.wmf_languageVariantCode
+            self = .wikipedia("en", "", languageVariantCode)
+            return
+        }
+        
         // Assign non-language specific project
         if siteURLString.contains(Configuration.Domain.mediaWiki) {
            self = .mediawiki

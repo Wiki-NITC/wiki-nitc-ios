@@ -679,6 +679,12 @@ import WMFTestKitchen
      *   `MWKLanguageLinkController.sharedInstance().appLanguage.siteURL().host`
      */
     public func submit<E: EventInterface>(stream: Stream, event: E, domain: String? = nil, needsMinimal: Bool = false, completion: (() -> Void)? = nil) {
+        // NITC Wiki: EventPlatform is disabled — silently drop all events
+        guard NITCWikiFeatureFlags.current.hasEventPlatform else {
+            completion?()
+            return
+        }
+        
         let date = Date() // Record the date synchronously so there's no delay
         encodeQueue.async {
             self._submit(stream: stream, event: event, date: date, domain: domain, needsMinimal: needsMinimal)

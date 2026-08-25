@@ -65,6 +65,13 @@ final class LinkCoordinator: Coordinator {
         
         guard let siteURL = url.wmf_site,
               let project = WikimediaProject(siteURL: siteURL) else {
+            
+            if NITCWikiFeatureFlags.current.isNITCWiki,
+               let host = url.host,
+               host == Configuration.Domain.nitcWiki {
+                return destinationForNITCURL(url)
+            }
+            
             return .unknown
         }
         
@@ -100,6 +107,24 @@ final class LinkCoordinator: Coordinator {
                 return .unknown
             }
             
+            return .article
+        default:
+            return .unknown
+        }
+    }
+    
+    private static func destinationForNITCURL(_ url: URL) -> Destination {
+        let canonicalURL = url.canonical
+        
+        guard let resourcePath = canonicalURL.wikiResourcePath else {
+            return .unknown
+        }
+        
+        let namespaceAndTitle = resourcePath.namespaceAndTitleOfWikiResourcePath(with: "en")
+        let namespace = namespaceAndTitle.0
+        
+        switch namespace {
+        case .main:
             return .article
         default:
             return .unknown

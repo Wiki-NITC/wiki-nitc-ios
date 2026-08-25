@@ -21,8 +21,7 @@ public struct WMFSimpleEmptyStateView: View {
             Spacer()
             if let image = UIImage(named: imageName, in: .module, with: nil) {
                 Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .resizable().scaledToFill()
                     .frame(width: 132, height: 118)
             }
             WMFHtmlText(html: title, styles: summaryStyles)

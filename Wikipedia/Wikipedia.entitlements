@@ -6,6 +6,9 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>applinks:wiki.fosscell.org</string>
+		<string>webcredentials:wiki.fosscell.org</string>
+		<string>activitycontinuation:wiki.fosscell.org</string>
 		<string>applinks:*.wikipedia.org</string>
 		<string>webcredentials:*.wikipedia.org</string>
 		<string>activitycontinuation:*.wikipedia.org</string>

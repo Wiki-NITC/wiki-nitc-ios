@@ -133,6 +133,9 @@ static NSString *const WMFPreviousLanguagesKey = @"WMFPreviousSelectedLanguagesK
 }
 
 - (NSArray<NSURL *> *)preferredSiteURLs {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return @[[NSURL URLWithString:@"https://wiki.fosscell.org"]];
+    }
     return [[self preferredLanguages] wmf_mapAndRejectNil:^NSURL *_Nullable(MWKLanguageLink *_Nonnull obj) {
         return [obj siteURL];
     }];
