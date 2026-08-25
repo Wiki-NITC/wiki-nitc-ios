@@ -22,12 +22,47 @@ extension String {
     }
     
     static let wikiResourceRegex = try! NSRegularExpression(pattern: "^/wiki/(.+)$", options: .caseInsensitive)
+    // NITC Wiki: article paths are at root /<title>, not /wiki/<title>
+    // Match any path that doesn't look like a known script/API path
+    static let nitcWikiResourceRegex = try! NSRegularExpression(pattern: "^/([^/]+.*)$", options: .caseInsensitive)
+    // Known NITC non-article path prefixes to exclude from root article matching
+    private static let nitcNonArticlePrefixes = ["api.php", "rest.php", "api/", "index.php", "load.php", "thumb/", "images/", "skins/", "extensions/", "resources/"]
+    
     var wikiResourcePath: String? {
+        if NITCWikiFeatureFlags.current.isNITCWiki {
+            // For NITC, try /wiki/ first (for compatibility), then root path
+            if let wikiMatch = String.wikiResourceRegex.firstReplacementString(in: self) {
+                return wikiMatch
+            }
+            // Match root paths but exclude known script/API paths
+            guard let rootMatch = String.nitcWikiResourceRegex.firstReplacementString(in: self) else {
+                return nil
+            }
+            for prefix in String.nitcNonArticlePrefixes {
+                if rootMatch.hasPrefix(prefix) {
+                    return nil
+                }
+            }
+            return rootMatch
+        }
         return String.wikiResourceRegex.firstReplacementString(in: self)
     }
     
     static let wResourceRegex = try! NSRegularExpression(pattern: "^/w/(.+)$", options: .caseInsensitive)
     public var wResourcePath: String? {
+        if NITCWikiFeatureFlags.current.isNITCWiki {
+            // NITC Wiki: script paths are at root, e.g. /index.php instead of /w/index.php
+            // Try /w/ first for compatibility, then root
+            if let wMatch = String.wResourceRegex.firstReplacementString(in: self) {
+                return wMatch
+            }
+            // Check if path starts with a known script
+            let pathWithoutSlash = String(self.dropFirst()) // remove leading /
+            if pathWithoutSlash.hasPrefix("index.php") {
+                return pathWithoutSlash
+            }
+            return nil
+        }
         return String.wResourceRegex.firstReplacementString(in: self)
     }
     

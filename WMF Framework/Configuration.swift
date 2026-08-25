@@ -38,6 +38,11 @@ public class Configuration: NSObject {
     public let environment: Environment
     
     @objc public static let current: Configuration = {
+        // NITC Wiki mode: override all other environment switches
+        if NITCWikiFeatureFlags.current.isNITCWiki {
+            return .nitcWiki
+        }
+        
         #if WMF_LOCAL
         return Configuration.local(options: [.localPCS, .localAnnouncements])
         #elseif WMF_STAGING
@@ -88,6 +93,20 @@ public class Configuration: NSObject {
             defaultSiteDomain: Domain.wikipedia,
             wikipediaCookieDomain: Domain.wikipedia.withDotPrefix,
             centralAuthCookieTargetDomains: centralAuthCookieTargetDomains,
+            pageContentServiceAPIType: .production,
+            feedContentAPIType: .production,
+            announcementsAPIType: .production,
+            wikidataAPIType: .production,
+            commonsAPIType: .production)
+    }()
+    
+    /// NITC Wiki configuration targeting wiki.fosscell.org
+    public static let nitcWiki: Configuration = {
+        return Configuration(
+            environment: .production,
+            defaultSiteDomain: Domain.nitcWiki,
+            wikipediaCookieDomain: Domain.nitcWiki.withDotPrefix,
+            centralAuthCookieTargetDomains: [Domain.nitcWiki.withDotPrefix],
             pageContentServiceAPIType: .production,
             feedContentAPIType: .production,
             announcementsAPIType: .production,
@@ -172,6 +191,9 @@ public class Configuration: NSObject {
         public static let wikinews = "wikinews.org"
         public static let wikiversity = "wikiversity.org"
         public static let wikivoyage = "wikivoyage.org"
+        
+        // NITC Wiki
+        public static let nitcWiki = "wiki.fosscell.org"
     }
     
     struct Path {
@@ -180,6 +202,34 @@ public class Configuration: NSObject {
         static let mediaWikiAPIComponents = ["w", "api.php"]
         static let mediaWikiRestAPIComponents = ["w", "rest.php"]
         static let expandedWikiResourceComponents = ["w", "index.php"]
+        
+        // NITC Wiki: root paths without /w/ prefix, no /wiki/ for articles
+        static let nitcWikiResourceComponent: [String] = []  // root article paths
+        static let nitcRestBaseAPIComponents = ["api", "rest_v1"]
+        static let nitcMediaWikiAPIComponents = ["api.php"]
+        static let nitcMediaWikiRestAPIComponents = ["rest.php"]
+        static let nitcExpandedWikiResourceComponents = ["index.php"]
+    }
+    
+    /// Returns the appropriate path components based on whether NITC mode is active.
+    public static var currentWikiResourceComponent: [String] {
+        return NITCWikiFeatureFlags.current.isNITCWiki ? Path.nitcWikiResourceComponent : Path.wikiResourceComponent
+    }
+    
+    public static var currentRestBaseAPIComponents: [String] {
+        return NITCWikiFeatureFlags.current.isNITCWiki ? Path.nitcRestBaseAPIComponents : Path.restBaseAPIComponents
+    }
+    
+    public static var currentMediaWikiAPIComponents: [String] {
+        return NITCWikiFeatureFlags.current.isNITCWiki ? Path.nitcMediaWikiAPIComponents : Path.mediaWikiAPIComponents
+    }
+    
+    public static var currentMediaWikiRestAPIComponents: [String] {
+        return NITCWikiFeatureFlags.current.isNITCWiki ? Path.nitcMediaWikiRestAPIComponents : Path.mediaWikiRestAPIComponents
+    }
+    
+    public static var currentExpandedWikiResourceComponents: [String] {
+        return NITCWikiFeatureFlags.current.isNITCWiki ? Path.nitcExpandedWikiResourceComponents : Path.expandedWikiResourceComponents
     }
     
     // MARK: State
@@ -219,8 +269,13 @@ public class Configuration: NSObject {
         self.centralAuthCookieSourceDomain = self.wikipediaCookieDomain
         self.centralAuthCookieTargetDomains = centralAuthCookieTargetDomains
         
-        self.wikipediaDomains = [Domain.wikipedia, Domain.wikipediaBetaLabs, Domain.appsLabs]
-        self.inAppWebViewRoutingDomains = wikipediaDomains + [Domain.mediaWiki, Domain.wikidata, Domain.wikimedia, Domain.wikimediafoundation]
+        if NITCWikiFeatureFlags.current.isNITCWiki {
+            self.wikipediaDomains = [Domain.nitcWiki]
+            self.inAppWebViewRoutingDomains = [Domain.nitcWiki]
+        } else {
+            self.wikipediaDomains = [Domain.wikipedia, Domain.wikipediaBetaLabs, Domain.appsLabs]
+            self.inAppWebViewRoutingDomains = wikipediaDomains + [Domain.mediaWiki, Domain.wikidata, Domain.wikimedia, Domain.wikimediafoundation]
+        }
         self.pageContentServiceAPIType = pageContentServiceAPIType
         self.feedContentAPIType = feedContentAPIType
         self.announcementsAPIType = announcementsAPIType
@@ -314,7 +369,13 @@ public class Configuration: NSObject {
     
     public func mediaWikiAPIURLForLanguageCode(_ languageCode: String, siteDomain: String? = nil, queryParameters: [String: Any]?) -> URLComponents {
         let domain = siteDomain ?? defaultSiteDomain
-        let host = "\(languageCode).\(domain)"
+        let host: String
+        if NITCWikiFeatureFlags.current.isNITCWiki {
+            // NITC is a single-host wiki — do not prepend language subdomain
+            host = domain
+        } else {
+            host = "\(languageCode).\(domain)"
+        }
         return mediaWikiAPIURLForHost(host, with: queryParameters)
     }
     
@@ -339,14 +400,14 @@ public class Configuration: NSObject {
         var components = URLComponents()
         components.host = host
         components.scheme = Scheme.https
-        return APIURLComponentsBuilder(hostComponents: components, basePathComponents: Path.wikiResourceComponent)
+        return APIURLComponentsBuilder(hostComponents: components, basePathComponents: Configuration.currentWikiResourceComponent)
     }
     
     func expandedArticleURLComponentsBuilder(for host: String) -> APIURLComponentsBuilder {
         var components = URLComponents()
         components.host = host
         components.scheme = Scheme.https
-        return APIURLComponentsBuilder(hostComponents: components, basePathComponents: Path.expandedWikiResourceComponents)
+        return APIURLComponentsBuilder(hostComponents: components, basePathComponents: Configuration.currentExpandedWikiResourceComponents)
     }
     
     public func articleURLForHost(_ host: String, languageVariantCode: String?, appending pathComponents: [String]) -> URL? {

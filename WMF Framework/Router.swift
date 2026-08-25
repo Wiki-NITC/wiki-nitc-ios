@@ -30,6 +30,14 @@ public class Router: NSObject {
         guard let siteURL = url.wmf_site,
         let project = WikimediaProject(siteURL: siteURL) else {
             
+            // For NITC Wiki: if the host is wiki.fosscell.org but WikimediaProject didn't match,
+            // still try to route it as an article
+            if NITCWikiFeatureFlags.current.isNITCWiki,
+               let host = url.host,
+               host == Configuration.Domain.nitcWiki {
+                return destinationForNITCURL(url, permanentUsername: permanentUsername)
+            }
+            
             guard url.isWikimediaHostedAudioFileLink else {
                 return webViewDestinationForHostURL(url)
             }
@@ -135,6 +143,11 @@ public class Router: NSObject {
             guard let host = url.host,
                   host != "thankyou.wikipedia.org" else {
                 return nil
+            }
+            
+            // Skip main page redirect for NITC
+            if NITCWikiFeatureFlags.current.isNITCWiki {
+                return Destination.article(url)
             }
             
             return WikipediaURLTranslations.isMainpageTitle(title, in: language) ? nil : Destination.article(url)
@@ -270,5 +283,33 @@ public class Router: NSObject {
         } else {
             return .externalLink(url)
         }
+    }
+    
+    // MARK: - NITC Wiki Routing
+    
+    /// Fallback routing for NITC Wiki URLs when WikimediaProject init doesn't match.
+    /// Treats root paths on wiki.fosscell.org as article URLs.
+    internal func destinationForNITCURL(_ url: URL, permanentUsername: String?) -> Destination {
+        let canonicalURL = url.canonical
+        
+        // Check if the path looks like an article (not an API/script path)
+        if let path = canonicalURL.path.isEmpty ? nil : canonicalURL.path,
+           let resourcePath = path.wikiResourcePath {
+            let namespaceAndTitle = resourcePath.namespaceAndTitleOfWikiResourcePath(with: "en")
+            let namespace = namespaceAndTitle.0
+            
+            switch namespace {
+            case .talk:
+                return .talk(canonicalURL)
+            case .userTalk:
+                return .userTalk(canonicalURL)
+            case .main:
+                return .article(canonicalURL)
+            default:
+                break
+            }
+        }
+        
+        return webViewDestinationForHostURL(url)
     }
 }

@@ -137,22 +137,34 @@ NSString *const WMFNewExploreFeedPreferencesWereRejectedNotification = @"WMFNewE
     if (!_contentSources) {
         NSArray<NSURL *>*siteURLs = self.preferredSiteURLs;
         NSParameterAssert(siteURLs);
-        NSMutableArray *mutableContentSources = [NSMutableArray arrayWithCapacity:2 + siteURLs.count * 7];
-        [mutableContentSources addObject:[[WMFRelatedPagesContentSource alloc] init]];
-        [mutableContentSources addObject:[[WMFContinueReadingContentSource alloc] initWithUserDataStore:self.dataStore]];
-        [mutableContentSources addObject:[[WMFSuggestedEditsContentSource alloc] initWithDataStore:self.dataStore]];
         
-        for (NSURL *siteURL in siteURLs) {
-            [mutableContentSources addObject:[[WMFDailyGameContentSource alloc] initWithDataStore:self.dataStore siteURL:siteURL]];
-            WMFFeedContentSource *feedContentSource = [[WMFFeedContentSource alloc] initWithSiteURL:siteURL
-                                                                                      userDataStore:self.dataStore];
-            [mutableContentSources addObjectsFromArray: @[[[WMFNearbyContentSource alloc] initWithSiteURL:siteURL  dataStore:self.dataStore],
-                                feedContentSource,
-                                [[WMFRandomContentSource alloc] initWithSiteURL:siteURL session:session configuration:configuration],
-                                [[WMFAnnouncementsContentSource alloc] initWithSiteURL:siteURL userDataStore:self.dataStore],
-                                [[WMFOnThisDayContentSource alloc] initWithSiteURL:siteURL session:session configuration:configuration]]];
+        if ([NITCWikiFeatureFlags current].isNITCWiki) {
+            // NITC Wiki: minimal feed — continue reading, related pages, random
+            NSMutableArray *mutableContentSources = [NSMutableArray arrayWithCapacity:2 + siteURLs.count];
+            [mutableContentSources addObject:[[WMFRelatedPagesContentSource alloc] init]];
+            [mutableContentSources addObject:[[WMFContinueReadingContentSource alloc] initWithUserDataStore:self.dataStore]];
+            for (NSURL *siteURL in siteURLs) {
+                [mutableContentSources addObject:[[WMFRandomContentSource alloc] initWithSiteURL:siteURL session:session configuration:configuration]];
+            }
+            _contentSources = [mutableContentSources copy];
+        } else {
+            NSMutableArray *mutableContentSources = [NSMutableArray arrayWithCapacity:2 + siteURLs.count * 7];
+            [mutableContentSources addObject:[[WMFRelatedPagesContentSource alloc] init]];
+            [mutableContentSources addObject:[[WMFContinueReadingContentSource alloc] initWithUserDataStore:self.dataStore]];
+            [mutableContentSources addObject:[[WMFSuggestedEditsContentSource alloc] initWithDataStore:self.dataStore]];
+            
+            for (NSURL *siteURL in siteURLs) {
+                [mutableContentSources addObject:[[WMFDailyGameContentSource alloc] initWithDataStore:self.dataStore siteURL:siteURL]];
+                WMFFeedContentSource *feedContentSource = [[WMFFeedContentSource alloc] initWithSiteURL:siteURL
+                                                                                          userDataStore:self.dataStore];
+                [mutableContentSources addObjectsFromArray: @[[[WMFNearbyContentSource alloc] initWithSiteURL:siteURL  dataStore:self.dataStore],
+                                    feedContentSource,
+                                    [[WMFRandomContentSource alloc] initWithSiteURL:siteURL session:session configuration:configuration],
+                                    [[WMFAnnouncementsContentSource alloc] initWithSiteURL:siteURL userDataStore:self.dataStore],
+                                    [[WMFOnThisDayContentSource alloc] initWithSiteURL:siteURL session:session configuration:configuration]]];
+            }
+            _contentSources = [mutableContentSources copy];
         }
-        _contentSources = [mutableContentSources copy];
     }
     return _contentSources;
 }

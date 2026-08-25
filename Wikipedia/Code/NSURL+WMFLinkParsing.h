@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *const WMFAPIPath;
+extern NSString *WMFAPIPath;
 extern NSString *const WMFEditPencil;
 
 @interface NSURL (WMFLinkParsing)

@@ -140,6 +140,11 @@ class DonateCoordinator: Coordinator {
     @discardableResult
     func start() -> Bool {
 
+        // NITC Wiki: donations are disabled
+        guard NITCWikiFeatureFlags.current.hasDonations else {
+            return false
+        }
+
         guard let countryCode = Locale.current.region?.identifier else {
             return false
         }

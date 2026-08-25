@@ -5,8 +5,19 @@
 #import <objc/runtime.h>
 
 NSString *const WMFMediaWikiDomain = @"mediawiki.org";
-NSString *const WMFAPIPath = @"/w/api.php";
 NSString *const WMFEditPencil = @"WMFEditPencil";
+
+// NITC Wiki uses root /api.php instead of /w/api.php
+NSString *WMFAPIPath = nil;
+
+__attribute__((constructor))
+static void initWMFAPIPath(void) {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        WMFAPIPath = @"/api.php";
+    } else {
+        WMFAPIPath = @"/w/api.php";
+    }
+}
 
 @implementation NSURL (WMFLinkParsing)
 
