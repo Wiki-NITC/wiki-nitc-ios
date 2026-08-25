@@ -8,7 +8,7 @@ import Foundation
 public class CommonStrings: NSObject {
     @objc public static let plainWikipediaName = CommonStrings.plainWikipediaName()
     @objc public static func plainWikipediaName(with languageCode: String? = nil) -> String {
-        WMFLocalizedString("about-wikipedia", languageCode: languageCode, value:"Wikipedia", comment: "Wikipedia {{Identical|Wikipedia}}")
+        return "NITCWiki"
     }
 
     @objc public static func onLangWikipedia(with languageCode: String? = nil) -> String {
@@ -238,9 +238,9 @@ public class CommonStrings: NSObject {
     @objc public static let privacyPolicyTitle = WMFLocalizedString("privacy-policy-title", value: "Privacy policy", comment: "Title for the privacy Policy")
     @objc public static let termsOfUseTitle = WMFLocalizedString("terms-of-use-title", value: "Terms of use", comment: "Title for the terms of use")
 
-    @objc public static let privacyPolicyURLString = "https://foundation.wikimedia.org/wiki/Policy:Privacy_policy"
-    @objc public static let termsOfUseURLString = "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use"
-    public static let aboutWikipediaURLString = "https://en.wikipedia.org/wiki/Wikipedia:About"
+    @objc public static let privacyPolicyURLString = "https://wiki.fosscell.org/wiki/NITC_Wiki:Privacy_policy"
+    @objc public static let termsOfUseURLString = "https://wiki.fosscell.org/wiki/NITC_Wiki:Terms_of_Use"
+    public static let aboutWikipediaURLString = "https://wiki.fosscell.org/wiki/NITC_Wiki:About"
     public static let legalAndSafetyContactUsURLString = "https://foundation.wikimedia.org/wiki/Legal:Wikimedia_Foundation_Legal_and_Safety_Contact_Information"
 
     @objc public static let account = WMFLocalizedString("settings-account", value: "Account", comment: "Title for button and page letting user view their account page.")
@@ -712,7 +712,7 @@ public class CommonStrings: NSObject {
     public static let yearInReviewLoginPromptIntroTitle = WMFLocalizedString("year-in-review-intro-login-title", value: "Log in for personalization", comment: "Title of alert that asks user to login if they want to view the personalized feature.")
     public static let yearInReviewLoginPromptSubtitle = WMFLocalizedString("profile-year-in-review-login-subtitle", value: "Log in or create an account to see Year in Review and be eligible for more personalized insights.", comment: "Subtitle of alert that asks user to login. Displayed after they completed the feature for the first time.")
 
-    public static let joinLoginTitle = WMFLocalizedString("profile-page-join-title", value: "Log in / Join Wikipedia", comment: "Link to sign up or sign in")
+    public static let joinLoginTitle = "Log in / Join NITCWiki"
 
     public static let noThanksTitle = WMFLocalizedString("variants-alert-dismiss-button", value: "No thanks", comment: "Dismiss button on alert used to inform users about variant support.")
     public static let continueWithoutLoggingIn = WMFLocalizedString("ip-account-cta-bottom", value: "Continue without logging in", comment: "Continue without logging in button title")
@@ -761,12 +761,12 @@ public class CommonStrings: NSObject {
     public static let yirFeatureAnnoucementBody =  WMFLocalizedString("year-in-review-feature-announcement-body", value: "See insights about what articles we read and edited, and share highlights from our year on Wikipedia.", comment: "Body for year in review feature announcement")
     public static let yirFeatureAnnoucementBodyPersonalized =  WMFLocalizedString("year-in-review-feature-announcement-body-personalized", value: "See insights about the articles you read on the Wikipedia app, share your journey, and discover highlights from your year.", comment: "Body for year in review feature announcement")
 
-    public static let searchButtonAccessibilityLabel = WMFLocalizedString("search-button-accessibility-label", value: "Search Wikipedia", comment: "Accessibility label for a button that opens a search box to search Wikipedia.")
+    public static let searchButtonAccessibilityLabel = "Search NITCWiki"
 
     @objc public static let emptyNoHistoryTitle = WMFLocalizedString("empty-no-history-title", value: "No history to show", comment: "Title of a blank screen shown when a user has no history")
     @objc public static let emptyNoHistorySubtitle = WMFLocalizedString("empty-no-history-message", value: "Keep track of what you've been reading here", comment: "Message of a blank screen shown when a user has no history")
 
-    public static let searchBarPlaceholder = WMFLocalizedString("search-field-placeholder-text", value: "Search Wikipedia", comment: "Search field placeholder text")
+    public static let searchBarPlaceholder = "Search NITCWiki"
 
     // Lockscreen Search Widget strings
     public static let lockscreenSearchWidgetDescription = WMFLocalizedString("lockscreen-search-widget-description", value: "Quick access to search Wikipedia from your lock screen.", comment: "Text for description of lockscreen search widget displayed when adding to lock screen.")

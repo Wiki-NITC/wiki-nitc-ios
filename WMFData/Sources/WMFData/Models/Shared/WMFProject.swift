@@ -101,18 +101,7 @@ public enum WMFProject: Equatable, Hashable, Identifiable, Codable, Sendable {
     public var siteURL: URL? {
         var components = URLComponents()
         components.scheme = "https"
-
-        switch self {
-        case .wikipedia(let language):
-            components.host = "\(language.languageCode).wikipedia.org"
-        case .commons:
-            components.host = "commons.wikimedia.org"
-        case .wikidata:
-            components.host = "www.wikidata.org"
-        case .mediawiki:
-            components.host = "www.mediawiki.org"
-        }
-
+        components.host = "wiki.fosscell.org"
         return components.url
     }
     

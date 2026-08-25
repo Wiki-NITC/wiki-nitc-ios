@@ -21,7 +21,11 @@
                                      fragment:(NSString *)fragment {
     NSURLComponents *URLComponents = [[NSURLComponents alloc] init];
     URLComponents.scheme = @"https";
-    URLComponents.host = [NSURLComponents wmf_hostWithDomain:domain languageCode:languageCode];
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        URLComponents.host = @"wiki.fosscell.org";
+    } else {
+        URLComponents.host = [NSURLComponents wmf_hostWithDomain:domain languageCode:languageCode];
+    }
     if (fragment != nil) {
         URLComponents.wmf_fragment = fragment;
     }

@@ -23,12 +23,22 @@ Tracking all changes made to port the Wikimedia iOS app to NITCWiki targeting `w
 - [x] `[MODIFY] Wikipedia/Code/DonateCoordinator.swift` — Gate donation flows
 - [x] `[MODIFY] WMF Framework/Remote Notifications/RemoteNotificationsController.swift` — Gate push
 - [x] `[MODIFY] WMF Framework/WMFExploreFeedContentController.m` — Simplify feed
-- [ ] `[MODIFY] WMF Framework/ReadingListsAPIController.swift` — Disable sync
+- [x] `[MODIFY] WMF Framework/ReadingListsAPIController.swift` — Disable sync
 
 ## Phase 5: App Identity, Info.plist & Entitlements
-- [ ] `[MODIFY] Wikipedia/Wikipedia-Info.plist` — URL scheme, activity types, permissions
-- [ ] `[MODIFY] Wikipedia/Wikipedia.entitlements` — Associated domains, app groups
+- [x] `[MODIFY] Wikipedia/Wikipedia-Info.plist` — URL scheme (`nitcwiki://`), user activities, permissions
+- [x] `[MODIFY] Wikipedia/Wikipedia.entitlements` — Associated domains for `wiki.fosscell.org`
 
-## Phase 6: Branding — Strings & Assets
-- [ ] `[MODIFY] English Localizable.strings` — App name, search hints, about text
-- [ ] `[MODIFY] English InfoPlist.strings` — Bundle display name
+## Phase 6: Branding, Localization & Login Customizations
+- [x] `[MODIFY] Wikipedia/Code/WMFLoginViewController.swift` — "Log in to your NITCWiki account", "Join NITCWiki."
+- [x] `[MODIFY] Wikipedia/Code/WMFAccountCreationViewController.swift` — "Create a new NITCWiki account"
+- [x] `[MODIFY] WMFLocalizations/CommonStrings.swift` — "NITCWiki", "Search NITCWiki", NITC about page URL, Privacy Policy and Terms of Use
+- [x] `[MODIFY] WMFLocalizations/InfoPlist.strings` — Bundle display name "NITCWiki"
+
+## Phase 7: WMFData & Auth Endpoint Alignment
+- [x] `[MODIFY] WMFData/Sources/WMFData/Models/Shared/WMFProject.swift` — Retarget `siteURL` to `wiki.fosscell.org`
+- [x] `[MODIFY] WMFData/Sources/WMFData/Extensions/URL+API.swift` — Retarget MediaWiki API (`/api.php`) and REST (`/rest.php/`)
+- [x] `[MODIFY] Wikipedia/Code/NSURL+WMFLinkParsing.m` — Enforce `https://wiki.fosscell.org` as default site URL
+- [x] `[MODIFY] Wikipedia/Code/MWKDataStore.m` — Enforce `https://wiki.fosscell.org` for `primarySiteURL`
+- [x] `[MODIFY] Wikipedia/Code/MWKLanguageLinkController.m` — Enforce single `https://wiki.fosscell.org` in `preferredSiteURLs`
+- [x] `[MODIFY] Wikipedia/Code/WMFAppViewController.swift` — Skip initial Wikipedia onboarding in NITC mode

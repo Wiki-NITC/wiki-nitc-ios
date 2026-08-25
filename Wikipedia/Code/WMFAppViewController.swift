@@ -1607,6 +1607,11 @@ final class WMFAppViewController: UITabBarController, AppTabBarDelegate {
     private static let wmfDidShowOnboarding = "DidShowOnboarding5.3"
 
     private func shouldShowOnboarding() -> Bool {
+        if NITCWikiFeatureFlags.current.isNITCWiki {
+            // NITC Wiki: skip multilingual/growth onboarding flow on first run
+            return false
+        }
+        
         guard let unprocessedUserActivity,
               unprocessedUserActivity.shouldSkipOnboarding else {
             

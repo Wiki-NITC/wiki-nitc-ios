@@ -18,7 +18,6 @@
 "about-translators" = "Header text for translators section of the about page. Is not capitalised for aesthetic reasons, but could be capitalised in translations. {{Identical|Translator}}";
 "about-translators-details" = "Description of volunteer translation. $1 is translatewiki url.";
 "about-wikimedia-foundation" = "Name of the Wikimedia Foundation. Used by the message {{Msg-wikimedia|wikipedia-ios-about-product-of}}.";
-"about-wikipedia" = "Wikipedia {{Identical|Wikipedia}}";
 "account-creation-captcha-cannot-see-image" = "Text asking the user if they cannot see the captcha image. $1 is the message {{msg-wm|Wikipedia-ios-account-creation-captcha-request-account}}";
 "account-creation-captcha-obtaining" = "Alert shown when user wants a new captcha when creating account";
 "account-creation-captcha-request-account" = "Text for link to 'Request an account' page.";
@@ -1182,7 +1181,6 @@
 "profile-button-badge-accessibility-label" = "Accessibility label for the profile navigation bar badge button. This button has a badge indicating there are unread notifications. Tapping it navigates to the user profile view.";
 "profile-page-donate-subtext" = "Information about supporting Wikipedia through donations";
 "profile-page-join-subtext" = "Information about signing in or up";
-"profile-page-join-title" = "Link to sign up or sign in";
 "profile-page-logged-out-year-in-review-subtext" = "Footer text that appears underneath the Year in Review item in the Profile menu when the user is in a logged out state.";
 "profile-year-in-review-login-subtitle" = "Subtitle of alert that asks user to login. Displayed after they completed the feature for the first time.";
 "profile-year-in-review-login-title" = "Title of alert that asks user to login if they are entering Year in Review.";
@@ -1312,9 +1310,7 @@
 "saved-unsave-article-and-remove-from-reading-lists-message" = "Message of the alert action that unsaves a selected article and removes it from all associated reading lists. $1 will be replaced with the number of articles being unsaved.";
 "saved-unsave-article-and-remove-from-reading-lists-title" = "Title of the alert action that unsaves a selected article and removes it from all associated reading lists. $1 will be replaced with the number of articles to be unsaved.";
 "search-button-accessibility-hint" = "Accessibility hint for the search navigation bar button. Explains to the user what will happen upon button tap.";
-"search-button-accessibility-label" = "Accessibility label for a button that opens a search box to search Wikipedia.";
 "search-clear-title" = "Text of the button shown to clear recent search terms";
-"search-field-placeholder-text" = "Search field placeholder text";
 "search-recent-clear-confirmation-heading" = "Heading text of delete all confirmation dialog";
 "search-recent-clear-confirmation-sub-heading" = "Sub-heading text of delete all confirmation dialog";
 "search-recent-clear-delete-all" = "Button text for confirming delete all action {{Identical|Delete all}}";

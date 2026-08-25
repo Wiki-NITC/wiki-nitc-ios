@@ -730,6 +730,9 @@ NSString *const WMFCacheContextCrossProcessNotificiationChannelNamePrefix = @"or
 }
 
 - (nullable NSURL *)primarySiteURL {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return [NSURL URLWithString:@"https://wiki.fosscell.org"];
+    }
     return self.languageLinkController.appLanguage.siteURL;
 }
 

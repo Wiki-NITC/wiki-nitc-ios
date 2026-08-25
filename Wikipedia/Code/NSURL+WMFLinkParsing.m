@@ -31,14 +31,23 @@ static void initWMFAPIPath(void) {
 }
 
 + (NSURL *)wmf_URLWithDefaultSiteAndLanguageCode:(nullable NSString *)languageCode {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return [NSURL URLWithString:@"https://wiki.fosscell.org"];
+    }
     return [self wmf_URLWithDomain:WMFConfiguration.current.defaultSiteDomain languageCode:languageCode];
 }
 
 + (NSURL *)wmf_URLWithDefaultSiteAndLocale:(NSLocale *)locale {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return [NSURL URLWithString:@"https://wiki.fosscell.org"];
+    }
     return [self wmf_URLWithDomain:WMFConfiguration.current.defaultSiteDomain languageCode:[locale objectForKey:NSLocaleLanguageCode]];
 }
 
 + (NSURL *)wmf_URLWithDefaultSiteAndCurrentLocale {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return [NSURL URLWithString:@"https://wiki.fosscell.org"];
+    }
     return [self wmf_URLWithDefaultSiteAndLocale:[NSLocale currentLocale]];
 }
 

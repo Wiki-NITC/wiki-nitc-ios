@@ -78,7 +78,8 @@ class WMFLoginViewController: WMFScrollViewController, UITextFieldDelegate, WMFC
 
         loginButton.setTitle(CommonStrings.logIn, for: .normal)
 
-        createAccountButton.strings = WMFAuthLinkLabelStrings(dollarSignString: WMFLocalizedString("login-no-account", value:"Don't have an account? %1$@", comment:"Text for create account button. %1$@ is the message {{msg-wikimedia|login-account-join-wikipedia}}"), substitutionString: WMFLocalizedString("login-join-wikipedia", value:"Join Wikipedia.", comment:"Join Wikipedia text to be used as part of a create account button"))
+        let joinString = NITCWikiFeatureFlags.current.isNITCWiki ? "Join NITCWiki." : WMFLocalizedString("login-join-wikipedia", value:"Join Wikipedia.", comment:"Join Wikipedia text to be used as part of a create account button")
+        createAccountButton.strings = WMFAuthLinkLabelStrings(dollarSignString: WMFLocalizedString("login-no-account", value:"Don't have an account? %1$@", comment:"Text for create account button. %1$@ is the message {{msg-wikimedia|login-account-join-wikipedia}}"), substitutionString: joinString)
 
         createAccountButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(createAccountButtonPushed(_:))))
 
@@ -91,7 +92,7 @@ class WMFLoginViewController: WMFScrollViewController, UITextFieldDelegate, WMFC
         usernameField.textContentType = .username
         passwordField.textContentType = .password
 
-        titleLabel.text = WMFLocalizedString("login-title", value:"Log in to your account", comment:"Title for log in interface")
+        titleLabel.text = NITCWikiFeatureFlags.current.isNITCWiki ? "Log in to your NITCWiki account" : WMFLocalizedString("login-title", value:"Log in to your account", comment:"Title for log in interface")
         usernameTitleLabel.text = WMFLocalizedString("field-username-title", value:"Username", comment:"Title for username field {{Identical|Username}}")
         passwordTitleLabel.text = WMFLocalizedString("field-password-title", value:"Password", comment:"Title for password field {{Identical|Password}}")
 

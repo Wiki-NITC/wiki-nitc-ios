@@ -18,7 +18,6 @@
 "about-translators" = "Translators";
 "about-translators-details" = "Translated by volunteers at $1";
 "about-wikimedia-foundation" = "Wikimedia Foundation";
-"about-wikipedia" = "Wikipedia";
 "account-creation-captcha-cannot-see-image" = "Can't see the image? $1";
 "account-creation-captcha-obtaining" = "Obtaining a new CAPTCHA...";
 "account-creation-captcha-request-account" = "Request account.";
@@ -1182,7 +1181,6 @@
 "profile-button-badge-accessibility-label" = "Profile with unread badge";
 "profile-page-donate-subtext" = "Or support Wikipedia with a donation to keep it free and accessible for everyone around the world.";
 "profile-page-join-subtext" = "Sign up for a Wikipedia account to track your contributions, save articles offline, and sync across devices.";
-"profile-page-join-title" = "Log in / Join Wikipedia";
 "profile-page-logged-out-year-in-review-subtext" = "Log in or create an account to get an improved year in review next year";
 "profile-year-in-review-login-subtitle" = "Log in or create an account to see Year in Review and be eligible for more personalized insights.";
 "profile-year-in-review-login-title" = "Log in for access to Year in Review";
@@ -1312,9 +1310,7 @@
 "saved-unsave-article-and-remove-from-reading-lists-message" = "Unsaving {{PLURAL:$1|this article will remove it|these articles will remove them}} from all associated reading lists";
 "saved-unsave-article-and-remove-from-reading-lists-title" = "Unsave {{PLURAL:$1|article|articles}}?";
 "search-button-accessibility-hint" = "Navigates to the search view.";
-"search-button-accessibility-label" = "Search Wikipedia";
 "search-clear-title" = "Clear";
-"search-field-placeholder-text" = "Search Wikipedia";
 "search-recent-clear-confirmation-heading" = "Delete all recent searches?";
 "search-recent-clear-confirmation-sub-heading" = "This action cannot be undone!";
 "search-recent-clear-delete-all" = "Delete All";
