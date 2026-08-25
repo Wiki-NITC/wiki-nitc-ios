@@ -91,8 +91,7 @@ struct LockscreenSearchWidgetView: View {
     
     var accessoryCircularView: some View {
         Image("W")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
+            .resizable().scaledToFit()
             .frame(width: 28, height: 28)
             .widgetURL(entry.url)
             .modifier(ContainerBackgroundModifier())
@@ -101,8 +100,7 @@ struct LockscreenSearchWidgetView: View {
    var accessoryRectangularView: some View {
         HStack(spacing: 8) {
             Image("W")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+                .resizable().scaledToFit()
                 .frame(width: 25, height: 25)
             
             Text(CommonStrings.searchButtonAccessibilityLabel)

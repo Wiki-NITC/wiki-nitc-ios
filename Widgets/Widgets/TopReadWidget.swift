@@ -264,8 +264,7 @@ struct TopReadView: View {
     func elementImageOrEmptyView(_ elementIndex: Int) -> some View {
         if let image = entry?.rankedElements[elementIndex].image {
             Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
+                .resizable().scaledToFill()
         } else {
             EmptyView()
         }
@@ -367,8 +366,7 @@ struct TopReadOverlayView: View {
     func description() -> some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(TopReadWidget.LocalizedStrings.widgetTitle)
-                .font(Font(WMFFont.for(.boldCaption1)))
-                .aspectRatio(contentMode: .fit)
+                .font(Font(WMFFont.for(.boldCaption1))).scaledToFit()
                 .foregroundColor(primaryTextColor)
                 .readableShadow(intensity: isExpandedStyle ? 0 : 0.8)
             Text("\(rankedElement?.title ?? "–")")

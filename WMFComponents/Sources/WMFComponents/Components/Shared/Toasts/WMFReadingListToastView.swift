@@ -68,8 +68,7 @@ public struct WMFReadingListToastView: View {
                 .frame(width: 30, height: 30)
         } else {
             Image(uiImage: icon)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
+                .resizable().scaledToFill()
                 .frame(width: 45, height: 45)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
         }

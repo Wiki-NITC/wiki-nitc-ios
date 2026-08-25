@@ -56,8 +56,7 @@ public struct WMFRandomWidgetView: View {
             HStack {
                 Spacer()
                 Image("W")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .resizable().scaledToFit()
                     .frame(width: 26)
                     .foregroundColor(buttonForeground)
                     .shadow(color: Color(uiColor: theme.text).opacity(0.25), radius: 4, x: 0, y: 0)

@@ -42,7 +42,7 @@ extension URL {
         guard let base = comps.url else { return nil }
 
         let url: URL
-        if NITCWikiFeatureFlags.current.isNITCWiki {
+        if comps.host?.contains("fosscell.org") == true {
             // NITC Wiki uses root article paths: /<title>
             url = base.appendingPathComponent(normalized, isDirectory: false)
         } else {

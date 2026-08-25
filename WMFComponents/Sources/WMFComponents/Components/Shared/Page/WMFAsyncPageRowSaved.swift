@@ -214,8 +214,7 @@ struct WMFAsyncPageRowSaved: View {
         case .loaded:
             if let uiImage = viewModel.uiImage {
                 Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .resizable().scaledToFill()
                     .frame(width: 100, height: 100)
                     .clipShape(RoundedRectangle(cornerRadius: 3))
             }
