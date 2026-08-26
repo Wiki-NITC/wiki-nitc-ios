@@ -48,3 +48,9 @@ Tracking all changes made to port the Wikimedia iOS app to NITCWiki targeting `w
 - [x] `[MODIFY] Wikipedia/Code/WMFAccountLoginLogoutFetcher.swift` — Update `loginreturnurl` to dynamically use `siteURL.absoluteString` (instead of `wikipedia.org`)
 - [x] `[MODIFY] Wikipedia/Code/WMFAccountCreator.swift` — Update `createreturnurl` to `siteURL.absoluteString`
 - [x] `[MODIFY] Wikipedia/Code/WMFCurrentUserFetcher.swift` — Make `globaluserinfo` optional for standalone MediaWiki without CentralAuth extension
+- [x] `[MODIFY] Wikipedia/Code/NSURL+WMFLinkParsing.m` — Fix `wmf_domain` to preserve `wiki.fosscell.org` host rather than stripping to `fosscell.org`
+- [x] `[MODIFY] Wikipedia/Code/NSURLComponents+WMFLinkParsing.m` — Always resolve `wmf_hostWithDomain:subDomain:` to `wiki.fosscell.org` in NITC mode
+- [x] `[MODIFY] Wikipedia/Code/URL+LinkParsing.swift` — Resolve relative wiki hrefs against root article path (`encodedWikiURL`)
+- [x] `[MODIFY] Wikipedia/Code/LinkCoordinator.swift` — Prioritize NITC URL routing to native `ArticleViewController` for in-app cross links
+- [x] `[MODIFY] WMF Framework/Configuration.swift` — Add `fosscell.org` to `inAppWebViewRoutingDomains`
+- [x] `[MODIFY] WMF Framework/WMFExploreFeedContentController.m` — Add null-safe language code fallback (`?: @"en"`) in `updatedSortOrder` loop

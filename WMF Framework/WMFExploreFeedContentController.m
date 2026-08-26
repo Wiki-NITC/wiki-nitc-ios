@@ -190,7 +190,8 @@ NSString *const WMFNewExploreFeedPreferencesWereRejectedNotification = @"WMFNewE
     NSMutableDictionary<NSString *, NSNumber *> *updatedSortOrder = [NSMutableDictionary dictionaryWithCapacity:siteURLs.count];
     NSInteger i = 0;
     for (NSURL *siteURL in siteURLs) {
-        updatedSortOrder[siteURL.wmf_contentLanguageCode] = @(i);
+        NSString *langCode = siteURL.wmf_contentLanguageCode ?: @"en";
+        updatedSortOrder[langCode] = @(i);
         i++;
     }
     self.sortOrderByContentLanguageCode = updatedSortOrder;

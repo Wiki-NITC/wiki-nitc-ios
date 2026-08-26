@@ -271,7 +271,7 @@ public class Configuration: NSObject {
         
         if NITCWikiFeatureFlags.current.isNITCWiki {
             self.wikipediaDomains = [Domain.nitcWiki]
-            self.inAppWebViewRoutingDomains = [Domain.nitcWiki]
+            self.inAppWebViewRoutingDomains = [Domain.nitcWiki, "fosscell.org", ".fosscell.org"]
         } else {
             self.wikipediaDomains = [Domain.wikipedia, Domain.wikipediaBetaLabs, Domain.appsLabs]
             self.inAppWebViewRoutingDomains = wikipediaDomains + [Domain.mediaWiki, Domain.wikidata, Domain.wikimedia, Domain.wikimediafoundation]
