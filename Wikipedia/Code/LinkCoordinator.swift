@@ -63,15 +63,17 @@ final class LinkCoordinator: Coordinator {
     
     static func destination(for url: URL) -> Destination {
         
-        guard let siteURL = url.wmf_site,
-              let project = WikimediaProject(siteURL: siteURL) else {
-            
-            if NITCWikiFeatureFlags.current.isNITCWiki,
-               let host = url.host,
-               host == Configuration.Domain.nitcWiki {
+        if NITCWikiFeatureFlags.current.isNITCWiki {
+            if let host = url.host, host == Configuration.Domain.nitcWiki || host.contains("fosscell.org") {
                 return destinationForNITCURL(url)
             }
-            
+            if url.host == nil && !url.path.isEmpty {
+                return destinationForNITCURL(url)
+            }
+        }
+        
+        guard let siteURL = url.wmf_site,
+              let project = WikimediaProject(siteURL: siteURL) else {
             return .unknown
         }
         
@@ -124,7 +126,7 @@ final class LinkCoordinator: Coordinator {
         let namespace = namespaceAndTitle.0
         
         switch namespace {
-        case .main:
+        case .main, .talk, .userTalk:
             return .article
         default:
             return .unknown

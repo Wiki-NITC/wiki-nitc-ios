@@ -21,7 +21,7 @@ extension URL {
             assert(false, "encodedWikiURL potentially called on a non-wiki URL")
             return nil
         }
-        let encodedPathComponents = ["wiki", percentEncodedTitle]
+        let encodedPathComponents = NITCWikiFeatureFlags.current.isNITCWiki ? [percentEncodedTitle] : ["wiki", percentEncodedTitle]
         var encodedURLComponents = URLComponents(url: self, resolvingAgainstBaseURL: false)
         encodedURLComponents?.replacePercentEncodedPathWithPathComponents(encodedPathComponents)
         return encodedURLComponents?.wmf_URLWithLanguageVariantCode(wmf_languageVariantCode)

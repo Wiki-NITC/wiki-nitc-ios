@@ -196,6 +196,9 @@ static void initWMFAPIPath(void) {
 }
 
 - (NSString *)wmf_domain {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return @"wiki.fosscell.org";
+    }
     NSArray *hostComponents = [self.host componentsSeparatedByString:@"."];
     if (hostComponents.count < 3) {
         return self.host;
@@ -207,6 +210,9 @@ static void initWMFAPIPath(void) {
 }
 
 - (NSString *)wmf_languageCode {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return @"en";
+    }
     NSArray *hostComponents = [self.host componentsSeparatedByString:@"."];
     if (hostComponents.count < 3) {
         return nil;
@@ -266,6 +272,9 @@ static id wmf_languageVariantAssociatedObjectKey;
 }
 
 - (NSString *)wmf_contentLanguageCode {
+    if ([NITCWikiFeatureFlags current].isNITCWiki) {
+        return @"en";
+    }
     NSString *languageVariantCode = self.wmf_languageVariantCode;
     if (!languageVariantCode || [languageVariantCode isEqualToString:@""]) {
         return self.wmf_languageCode;

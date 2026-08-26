@@ -42,9 +42,9 @@
 
 + (NSString *)wmf_hostWithDomain:(NSString *)domain
                        subDomain:(NSString *)subDomain {
-    // NITC Wiki is a single-host wiki — don't prepend language subdomains
+    // NITC Wiki is a single-host wiki — always use wiki.fosscell.org
     if ([NITCWikiFeatureFlags current].isNITCWiki) {
-        return domain;
+        return @"wiki.fosscell.org";
     }
     
     NSMutableArray *hostComponents = [NSMutableArray array];
